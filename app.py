@@ -18,8 +18,11 @@ if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
 if not DATABASE_URL:
-    os.makedirs("instance", exist_ok=True)
     DATABASE_URL = "sqlite:///instance/users.db"
+
+# Ensure instance directory exists for SQLite
+if "sqlite" in DATABASE_URL:
+    os.makedirs("instance", exist_ok=True)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
